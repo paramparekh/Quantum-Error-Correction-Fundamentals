@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Error Correction Report</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+        }
+        
+        h2 {
+            color: var(--secondary-color);
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 15px;
+            margin-top: 40px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        img {
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .caption {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+        
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #c7254e;
+        }
+        
+        .highlight-box {
+            background-color: #e8f4f8;
+            border-left: 5px solid var(--secondary-color);
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quantum Error Correction Simulation</h1>
+            <div class="subtitle">Bit-Flip & Phase-Flip Repetition Codes</div>
+            <p><strong>Auther:</strong> Param Parekh | <strong>Date:</strong> January 2026</p>
+        </header>
+        
+        <div class="section">
+            <h2>1. Introduction</h2>
+            <p>
+                Quantum computers are susceptible to noise, which introduces errors in computation. 
+                <strong>Quantum Error Correction (QEC)</strong> is the field of protecting quantum information
+                from these errors. This project explores the simplest form of QEC: the <strong>Repetition Code</strong>.
+            </p>
+            <div class="highlight-box">
+                <strong>Project Goal:</strong> Simulate quantum circuits using <a href="https://github.com/quantumlib/Stim">Stim</a> to demonstrate how encoding one logical qubit into multiple physical qubits can significantly reduce error rates.
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>2. Methodology</h2>
+            <p>We implemented two types of repetition codes to handle different noise models:</p>
+            
+            <h3>2.1 Bit-Flip Code (Z-Basis)</h3>
+            <p>
+                Protects against <strong>Bit-Flip (X)</strong> errors ($X|0\rangle = |1\rangle$).
+                <br>
+                <strong>Encoding:</strong> $|0\rangle_L = |000\rangle$, $|1\rangle_L = |111\rangle$.
+                <br>
+                <strong>Syndrome Check:</strong> Measures Z-parity ($Z_i Z_{i+1}$) to detect flips without collapsing the state.
+            </p>
+
+            <h3>2.2 Phase-Flip Code (X-Basis)</h3>
+            <p>
+                Protects against <strong>Phase-Flip (Z)</strong> errors ($Z|+\rangle = |-\rangle$).
+                <br>
+                <strong>Encoding:</strong> $|0\rangle_L = |+++\rangle$, $|1\rangle_L = |---\rangle$.
+                <br>
+                <strong>Syndrome Check:</strong> Measures X-parity ($X_i X_{i+1}$).
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>3. Results & Analysis</h2>
+            
+            <h3>3.1 Bit-Flip Protection</h3>
+            <p>
+                We compared a 5-qubit repetition code against a single unprotected qubit under bit-flip noise.
+                The code successfully suppresses errors below the physical error rate.
+            </p>
+            <div class="image-container">
+                <img src="results/protected_vs_unprotected_d5.png" alt="Bit-Flip Results">
+                <div class="caption">Figure 1: Logical Error Rate vs Physical Error Rate for 5-qubit Code (Bit-Flip Noise).</div>
+            </div>
+            
+            <h3>3.2 Code Size Comparison</h3>
+            <p>
+                Increasing the code distance $d$ (number of qubits) improves protection, but only if the physical error rate is below a certain <strong>threshold</strong>.
+            </p>
+            <div class="image-container">
+                <img src="results/code_size_comparison.png" alt="Code Size Comparison">
+                <div class="caption">Figure 2: Performance comparison of d=3, d=5, and d=7 codes.</div>
+            </div>
+
+            <h3>3.3 New: Phase-Flip Protection</h3>
+            <p>
+                We extended the project to support Phase-Flip correction. The results confirm that the X-basis repetition code effectively corrects Z-errors.
+            </p>
+            <div class="image-container">
+                <img src="results/phase_flip_comparison.png" alt="Phase-Flip Results">
+                <div class="caption">Figure 3: Phase-Flip Code Performance (d=5).</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>4. Conclusion</h2>
+            <p>
+                This project successfully demonstrates the principles of quantum error correction. 
+                We observed that:
+            </p>
+            <ul>
+                <li>Repetition codes can arbitrarily reduce logical error rates given low enough physical noise.</li>
+                <li>There is a distinct difference between correcting X-errors and Z-errors, requiring basis transformations (Hadamard gates).</li>
+                <li>Measurement errors significantly impact the overall fidelity, introducing a trade-off for larger codes.</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>Generated by Param Parekh's Quantum Simulation Project</p>
+        </footer>
+    </div>
+</body>
+</html>
